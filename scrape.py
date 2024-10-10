@@ -17,17 +17,7 @@ def fetch_cached_html():
 def parse_article_info(html):
     soup = BeautifulSoup(html, 'html.parser')
     title_spans = soup.find_all('span', 'titleline')
-    # the long way
-    # print('got spans', title_spans)
-    # formatted_spans = list()
-    # for span in title_spans:
-    #     anchor = span.contents[0]
-    #     new_tuple = (anchor.get('href'), anchor.contents[0]) # the article url and title
-    #     print('made tuple', new_tuple)
-    #     formatted_spans.append(new_tuple)
-    # return formatted_spans
 
-    # the pythonic one liner
     return [(span.contents[0].get('href'), span.contents[0].contents[0]) for span in title_spans]
 
 def save_to_database(links, db_path='hackernews.sqlite'):
@@ -51,9 +41,7 @@ def main():
     url = "https://news.ycombinator.com"
     html = fetch_html(url)
     # html = fetch_cached_html()
-    # print("got html", html)
     articles = parse_article_info(html)
-    # print('got articles', articles)
     save_to_database(articles)
     print('finished saving to db... exiting')
 
