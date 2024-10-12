@@ -58,7 +58,12 @@ Basically, don't run the script more than once every 30 seconds and don't touch 
 </plist>
 ```
 
+Use Ctrl+O to save, then Ctrl+X to exit the nano editor.
+
+
 You can use different hour and minutes. Mine is set up to run at 11:16am each day.
+
+
 You can also use a different place to store log files. It should create the file on first run if it didn't previously exist but it couldn't hurt to `touch /Users/usarneme/Library/Logs/hackernews_scraper.log` to create the file ahead of time.
 
 5. Load the plist file into your launch daemon: `launchctl load ~/Library/LaunchAgents/hackernews.scraper.plist`
