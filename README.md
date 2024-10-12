@@ -23,7 +23,7 @@ Basically, don't run the script more than once every 30 seconds and don't touch 
 `git clone https://github.com/Usarneme/pieathon/`
 
 2. Enter the cloned directory and get the path to the python script:
-`cd pieathon`
+`cd pieathon`,
 `pwd` should output the full path to the script, for me it is at `/Users/usarneme/Projects/pieathon/scrape.py`
 
 3. Get the path to your python3 binary file is correct:
@@ -63,7 +63,11 @@ You can also use a different place to store log files. It should create the file
 
 5. Load the plist file into your launch daemon: `launchctl load ~/Library/LaunchAgents/hackernews.scraper.plist`
 
-6. Success!
+6. Success! Confirm the existence with `launchctl print gui/501/hackernews.scraper`. Remind yourself to check this and the log file again after the script runs next (whatever time of day you set it to run at in the .plist). Pay attention to the `last exit code` in the printout as that will give you some more info into tracking down any possible errors in the script run.
+
+---
+
+If you need to remove the job, you can do so with ` launchctl unload ~/Library/LaunchAgents/hackernews.scraper.plist` which will remove it from the list of automatic scripts.
 
 ---
 
