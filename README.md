@@ -68,7 +68,10 @@ You can also use a different place to store log files. It should create the file
 
 5. Load the plist file into your launch daemon: `launchctl load ~/Library/LaunchAgents/hackernews.scraper.plist`
 
-6. Success! Confirm the existence with `launchctl print gui/501/hackernews.scraper`. Remind yourself to check this and the log file again after the script runs next (whatever time of day you set it to run at in the .plist). Pay attention to the `last exit code` in the printout as that will give you some more info into tracking down any possible errors in the script run.
+6. Success! Confirm the existence with `launchctl print gui/$(id -u)/hackernews.scraper`.
+
+
+Remind yourself to check this and the log file again after the script runs next (whatever time of day you set it to run at in the .plist). Pay attention to the `last exit code` in the printout as that will give you some more info into tracking down any possible errors in the script run.
 
 ---
 
