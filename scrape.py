@@ -1,13 +1,21 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
+import logging
+import os
 import requests
 import sqlite3
+
+# Configure logging
+logging.basicConfig(filename='/Users/usarneme/Library/Logs/hackernews_scraper.log',
+                    level=logging.INFO,
+                    format='%(asctime)s %(levelname)s: %(message)s')
 
 def fetch_html(url):
     response = requests.get(url)
     if response.status_code == 200:
         return response.text
     else:
+        logging.error(f"Failed to fetch {url}")
         raise Exception(f"Failed to fetch {url}")
 
 def fetch_cached_html():
@@ -20,7 +28,8 @@ def parse_article_info(html):
 
     return [(span.contents[0].get('href'), span.contents[0].contents[0]) for span in title_spans]
 
-def save_to_database(links, db_path='hackernews.sqlite'):
+def save_to_database(links):
+    db_path = os.path.abspath('hackernews.sqlite')
     now = datetime.now()
     now_formatted = now.isoformat()
 
@@ -32,9 +41,16 @@ def save_to_database(links, db_path='hackernews.sqlite'):
 
     # each link is a tuple of article_url and article_title
     for link in links:
-        cur.execute('INSERT INTO Articles (url, title, shared_date) VALUES (?, ?, ?)', (link[0], link[1], now_formatted))
+        # only allow saving new/unique article URLs with the try/except
+        try:
+            cur.execute('INSERT INTO Articles (url, title, shared_date) VALUES (?, ?, ?)', (link[0], link[1], now_formatted))
+            conn.commit()
+        except sqlite3.IntegrityError:
+            logging.error(f"Url already exists: {link[0]}. Skipping save...")
+            print(f"Url already exists: {link[0]}. Skipping save...")
 
     conn.commit()
+    cur.close()
     conn.close()
 
 def main():
@@ -43,7 +59,7 @@ def main():
     # html = fetch_cached_html()
     articles = parse_article_info(html)
     save_to_database(articles)
-    print('finished saving to db... exiting')
+    logging.info('finished saving to db... exiting')
 
 if __name__ == '__main__':
     main()
