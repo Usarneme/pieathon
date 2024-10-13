@@ -1,21 +1,19 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
-import logging
+from logging_config import setup_logger
 import os
 import requests
 import sqlite3
 
-# Configure logging
-logging.basicConfig(filename='/Users/usarneme/Library/Logs/hackernews_scraper.log',
-                    level=logging.INFO,
-                    format='%(asctime)s %(levelname)s: %(message)s')
+logger = setup_logger('scrape.py')
+logger.info('Starting analyze.py...')
 
 def fetch_html(url):
     response = requests.get(url)
     if response.status_code == 200:
         return response.text
     else:
-        logging.error(f"Failed to fetch {url}")
+        logger.error(f"Failed to fetch {url}")
         raise Exception(f"Failed to fetch {url}")
 
 def fetch_cached_html():
@@ -46,7 +44,7 @@ def save_to_database(links):
             cur.execute('INSERT INTO Articles (url, title, shared_date) VALUES (?, ?, ?)', (link[0], link[1], now_formatted))
             conn.commit()
         except sqlite3.IntegrityError:
-            logging.error(f"Url already exists: {link[0]}. Skipping save...")
+            logger.error(f"Url already exists: {link[0]}. Skipping save...")
             print(f"Url already exists: {link[0]}. Skipping save...")
 
     conn.commit()
@@ -59,7 +57,7 @@ def main():
     # html = fetch_cached_html()
     articles = parse_article_info(html)
     save_to_database(articles)
-    logging.info('finished saving to db... exiting')
+    logger.info('finished saving to db... exiting')
 
 if __name__ == '__main__':
     main()

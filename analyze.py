@@ -1,12 +1,9 @@
-import logging
+from logging_config import setup_logger
 import os
 import sqlite3
 
-logging.basicConfig(filename='/Users/usarneme/Library/Logs/hackernews_scraper.log',
-                    level=logging.INFO,
-                    format='%(asctime)s %(levelname)s: %(message)s')
-
-logging.info('Starting analyze.py...')
+logger = setup_logger('analyze.py')
+logger.info('Starting analyze.py...')
 
 stop_words = {
     '-','a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an',
@@ -65,40 +62,41 @@ for record in cur:
     third_slash_position = find_third_slash_position(record[1])
     host = record[1][:third_slash_position]
     words = remove_stop_words(record[2].split())
-    logging.info('Looping', host, words)
+    logger.info(f'Looping {host} {words}')
 
-    for word in words:
-        words_cur.execute('SELECT id, count FROM Words WHERE word = ?', (word,))
-        result = words_cur.fetchone()
-        if result:
-            # Word was added previously, update the count
-            word_id, word_count = result
-            logging.info('Duplicate word, updating count...', word_id, word, word_count)
-            words_cur.execute('UPDATE Words SET count = ? WHERE id = ?', (word_count + 1, word_id))
-        else:
-            logging.info('New word, adding to Words', word)
-            # new word found, add it with a count of 0
-            words_cur.execute('INSERT INTO Words (word, count) VALUES (?, ?)', (word, 1))
+    # for word in words:
+    #     words_cur.execute('SELECT id, count FROM Words WHERE word = ?', (word,))
+    #     result = words_cur.fetchone()
+    #     print('got result', result)
+#         if result:
+#             # Word was added previously, update the count
+#             word_id, word_count = result
+#             logger.info('Duplicate word, updating count...', word_id, word, word_count)
+#             words_cur.execute('UPDATE Words SET count = ? WHERE id = ?', (word_count + 1, word_id))
+#         else:
+#             logger.info('New word, adding to Words', word)
+#             # new word found, add it with a count of 0
+#             words_cur.execute('INSERT INTO Words (word, count) VALUES (?, ?)', (word, 1))
 
-    urls_cur.execute('SELECT * FROM Urls WHERE url = ?', (host, ))
-    url_record = urls_cur.fetchone()
-    if url_record:
-        id = url_record[0]
-        count = url_record[2]
-        urls_cur.execute('UPDATE Urls SET count = ? WHERE id = ?', (count + 1, id))
-    else:
-        urls_cur.execute('INSERT INTO Urls (url, count) VALUES (?, ?)', (host, 1))
+#     urls_cur.execute('SELECT * FROM Urls WHERE url = ?', (host, ))
+#     url_record = urls_cur.fetchone()
+#     if url_record:
+#         id = url_record[0]
+#         count = url_record[2]
+#         urls_cur.execute('UPDATE Urls SET count = ? WHERE id = ?', (count + 1, id))
+#     else:
+#         urls_cur.execute('INSERT INTO Urls (url, count) VALUES (?, ?)', (host, 1))
 
-    articles_to_update.append(id)
+#     articles_to_update.append(id)
 
-conn.commit()
+# conn.commit()
 
-for article_id in articles_to_update:
-    cur.execute('UPDATE Articles SET processed = ? WHERE id = ?', (1, article_id))
+# for article_id in articles_to_update:
+#     cur.execute('UPDATE Articles SET processed = ? WHERE id = ?', (1, article_id))
 
-conn.commit()
+# conn.commit()
 
-logging.info('Finished reading urls and key words from article titles. Exiting analyze.py...')
+logger.info('Finished reading urls and key words from article titles. Exiting analyze.py...')
 
 words_cur.close()
 urls_cur.close()
