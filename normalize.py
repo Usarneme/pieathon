@@ -4,8 +4,8 @@ import re
 import sqlite3
 import string
 
-logger = setup_logger('analyze.py')
-logger.info('Starting analyze.py...')
+logger = setup_logger('normalize.py')
+logger.info('Starting normalize.py...')
 
 stop_words = {
     '-', '–', 'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an',
@@ -100,7 +100,7 @@ for article_id in articles_to_update:
 
 conn.commit()
 
-logger.info('Finished reading urls and key words from article titles. Exiting analyze.py...')
+logger.info('Finished reading urls and key words from article titles. Exiting normalize.py...')
 
 words_cur.close()
 urls_cur.close()

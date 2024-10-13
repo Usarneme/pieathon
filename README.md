@@ -1,5 +1,11 @@
 # Hackernews scraper and analysis
 
+### Hosted data visualization at http://usarneme-hn.surge.sh/
+
+The script runs once daily, pulls all domains out where articles are hosted and then linked to on ycombinator's hackernews aggregator. The article domains are counted increasing each time a new article is posted from the same domain. You can see a word cloud where the larger the font the more often the domain is linked on HN by visiting http://usarneme-hn.surge.sh/
+
+---
+
 Respect the robots.txt for ycombinator https://news.ycombinator.com/robots.txt:
 ```
 User-Agent: *
