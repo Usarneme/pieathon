@@ -1,12 +1,13 @@
 from logging_config import setup_logger
 import os
+import re
 import sqlite3
 
 logger = setup_logger('analyze.py')
 logger.info('Starting analyze.py...')
 
 stop_words = {
-    '-','a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an',
+    '-', '–', 'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an',
     'and', 'any', 'are', 'aren\'t', 'as', 'at', 'be', 'because', 'been',
     'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can',
     'can\'t', 'come', 'could', 'did', 'do', 'does', 'doing', 'down', 'during',
@@ -27,8 +28,9 @@ stop_words = {
     'you\'ve', 'your', 'yours', 'yourself', 'yourselves'
 }
 
-def remove_stop_words(words_list):
-    return [word for word in words_list if word.lower() not in stop_words]
+def clean_text(text):
+    alpha_numeric_only = re.sub(r'\W+', ' ', text)
+    return [word for word in alpha_numeric_only.split() if word.lower() not in stop_words]
 
 def find_third_slash_position(string):
     position = -1
@@ -54,47 +56,47 @@ cur.execute('''CREATE TABLE IF NOT EXISTS Urls (
             url TEXT,
             count INTEGER DEFAULT 0)''')
 
-cur.execute('''SELECT * FROM Articles WHERE processed = 0''')
 articles_to_update = []
-
+cur.execute('''SELECT * FROM Articles WHERE processed = 0''')
 for record in cur:
     id = record[0]
     third_slash_position = find_third_slash_position(record[1])
     host = record[1][:third_slash_position]
-    words = remove_stop_words(record[2].split())
+    words = clean_text(record[2])
     logger.info(f'Looping {host} {words}')
 
-    # for word in words:
-    #     words_cur.execute('SELECT id, count FROM Words WHERE word = ?', (word,))
-    #     result = words_cur.fetchone()
-    #     print('got result', result)
-#         if result:
-#             # Word was added previously, update the count
-#             word_id, word_count = result
-#             logger.info('Duplicate word, updating count...', word_id, word, word_count)
-#             words_cur.execute('UPDATE Words SET count = ? WHERE id = ?', (word_count + 1, word_id))
-#         else:
-#             logger.info('New word, adding to Words', word)
-#             # new word found, add it with a count of 0
-#             words_cur.execute('INSERT INTO Words (word, count) VALUES (?, ?)', (word, 1))
+    for word in words:
+        words_cur.execute('SELECT id, count FROM Words WHERE word = ?', (word,))
+        result = words_cur.fetchone()
 
-#     urls_cur.execute('SELECT * FROM Urls WHERE url = ?', (host, ))
-#     url_record = urls_cur.fetchone()
-#     if url_record:
-#         id = url_record[0]
-#         count = url_record[2]
-#         urls_cur.execute('UPDATE Urls SET count = ? WHERE id = ?', (count + 1, id))
-#     else:
-#         urls_cur.execute('INSERT INTO Urls (url, count) VALUES (?, ?)', (host, 1))
+        if result:
+            # Word was added previously, update the count
+            word_id, word_count = result
+            logger.info(f'Duplicate word, updating count... {word_id} {word} {word_count}')
+            words_cur.execute('UPDATE Words SET count = ? WHERE id = ?', (word_count + 1, word_id))
+        else:
+            logger.info(f'New word, adding to Words {word}')
+            # new word found, add it with a count of 0
+            words_cur.execute('INSERT INTO Words (word, count) VALUES (?, ?)', (word, 1))
 
-#     articles_to_update.append(id)
+    urls_cur.execute('SELECT * FROM Urls WHERE url = ?', (host, ))
+    url_record = urls_cur.fetchone()
+    if url_record:
+        url_id = url_record[0]
+        count = url_record[2]
+        urls_cur.execute('UPDATE Urls SET count = ? WHERE id = ?', (count + 1, url_id))
+    else:
+        urls_cur.execute('INSERT INTO Urls (url, count) VALUES (?, ?)', (host, 1))
 
-# conn.commit()
+    articles_to_update.append(id)
 
-# for article_id in articles_to_update:
-#     cur.execute('UPDATE Articles SET processed = ? WHERE id = ?', (1, article_id))
+conn.commit()
 
-# conn.commit()
+for article_id in articles_to_update:
+    logger.info(f'Updating Article ID {article_id} to processed DONE')
+    cur.execute('UPDATE Articles SET processed = ? WHERE id = ?', (1, article_id))
+
+conn.commit()
 
 logger.info('Finished reading urls and key words from article titles. Exiting analyze.py...')
 
