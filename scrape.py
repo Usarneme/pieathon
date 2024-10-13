@@ -37,7 +37,7 @@ def save_to_database(links):
     cur = conn.cursor()
     cur.execute('''CREATE TABLE IF NOT EXISTS Articles
                 (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT UNIQUE, title TEXT,
-                shared_date TEXT)''') # using ISO8601 datetime string as sqlite3 doesn't support datetimez
+                shared_date TEXT, processed BOOLEAN DEFAULT FALSE)''') # using ISO8601 datetime string as sqlite3 doesn't support datetimez
 
     # each link is a tuple of article_url and article_title
     for link in links:
