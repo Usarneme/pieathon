@@ -2,6 +2,7 @@ from logging_config import setup_logger
 import os
 import re
 import sqlite3
+import string
 
 logger = setup_logger('analyze.py')
 logger.info('Starting analyze.py...')
@@ -30,6 +31,7 @@ stop_words = {
 
 def clean_text(text):
     alpha_numeric_only = re.sub(r'\W+', ' ', text)
+    alpha_numeric_only = alpha_numeric_only.translate(str.maketrans('','', string.punctuation))
     return [word for word in alpha_numeric_only.split() if word.lower() not in stop_words]
 
 def find_third_slash_position(string):
