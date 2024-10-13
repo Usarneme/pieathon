@@ -6,7 +6,7 @@ import requests
 import sqlite3
 
 logger = setup_logger('scrape.py')
-logger.info('Starting analyze.py...')
+logger.info('Starting scrape.py...')
 
 def fetch_html(url):
     response = requests.get(url)
@@ -45,7 +45,6 @@ def save_to_database(links):
             conn.commit()
         except sqlite3.IntegrityError:
             logger.error(f"Url already exists: {link[0]}. Skipping save...")
-            print(f"Url already exists: {link[0]}. Skipping save...")
 
     conn.commit()
     cur.close()
@@ -57,7 +56,7 @@ def main():
     # html = fetch_cached_html()
     articles = parse_article_info(html)
     save_to_database(articles)
-    logger.info('finished saving to db... exiting')
+    logger.info('finished saving scraped data to db. Exiting...')
 
 if __name__ == '__main__':
     main()
