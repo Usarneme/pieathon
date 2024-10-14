@@ -164,3 +164,4 @@ cython_debug/
 
 # Ignore generated files
 urlsData.js
+wordsData.js

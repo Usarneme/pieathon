@@ -5,25 +5,16 @@ import sqlite3
 logger = setup_logger('urls_data_to_json.py')
 logger.info('Starting urls_data_to_json.py...')
 
-# goal is to output a file named urlsData.js which contains json in the format:
-# urls = [
-# {
-#   text: 'someword',
-#   size: 'somefontsize'
-# },
-# ]
-
 db_path = os.path.abspath('hackernews.sqlite')
 conn = sqlite3.connect(db_path)
 cur = conn.cursor()
 
 cur.execute('SELECT MAX(count) FROM Urls')
-highest = cur.fetchone()[0] # take first item form the tuple which is the number
+highest = cur.fetchone()[0] # take zeroeth item from the fetched tuple which corresponds to the number
 cur.execute('SELECT MIN(count) FROM Urls')
 lowest = cur.fetchone()[0]
 bigsize = 80
 smallsize = 20
-print(f'got highest {highest}, lowest {lowest}')
 
 fhand = open('www/urlsData.js','w')
 fhand.write("urlsData = [")
@@ -38,7 +29,7 @@ for record in cur:
     count = record[2]
     size = (count - lowest) / float(highest - lowest)
     size = int((size * bigsize) + smallsize)
-    fhand.write("{text: '"+url+"', size: "+str(size)+"}")
+    fhand.write("  {text: '"+url+"', size: "+str(size)+"}")
 
 fhand.write( "\n];\n")
 fhand.close()

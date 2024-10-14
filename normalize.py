@@ -18,8 +18,8 @@ stop_words = {
     'i\'ll', 'i\'m', 'i\'ve', 'if', 'in', 'into', 'is', 'isn\'t', 'it',
     'it\'s', 'its', 'itself', 'let\'s', 'me', 'more', 'most', 'my', 'myself',
     'no', 'nor', 'not', 'of', 'off', 'on', 'once', 'only', 'or', 'other',
-    'ought', 'our', 'ours', 'ourselves', 'out', 'over', 'own', 'same', 'she',
-    'she\'d', 'she\'ll', 'she\'s', 'should', 'so', 'some', 'such', 'than',
+    'ought', 'our', 'ours', 'ourselves', 'out', 'over', 'own','s', 'same', 'she',
+    'she\'d', 'she\'ll', 'she\'s', 'should', 'so', 'some', 'such', 't', 'than',
     'that', 'the', 'their', 'theirs', 'them', 'themselves', 'then', 'there',
     'there\'s', 'these', 'they', 'they\'d', 'they\'ll', 'they\'re', 'they\'ve',
     'this', 'those', 'through', 'to', 'too', 'under', 'until', 'up', 'very',
@@ -79,6 +79,10 @@ for record in cur:
         else:
             logger.info(f'New word, adding to Words {word}')
             # new word found, add it with a count of 0
+            word = word.translate(str.maketrans('','',string.punctuation))
+            word = word.translate(str.maketrans('','','1234567890'))
+            word = word.strip()
+            word = word.lower()
             words_cur.execute('INSERT INTO Words (word, count) VALUES (?, ?)', (word, 1))
 
     urls_cur.execute('SELECT * FROM Urls WHERE url = ?', (host, ))
