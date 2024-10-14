@@ -1,0 +1,10 @@
+body {
+  font-family: 'Spectral', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 400;
+  margin: auto;
+  padding: 14px;
+}
+
+.container {
+  display: flex;
+}
