@@ -20,7 +20,7 @@
 <script>
   var fill = d3.scale.category20();
 
-  d3.layout.cloud().size([700, 700])
+  d3.layout.cloud().size([900, 900])
       .words(urlsData)
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .font("Impact")
@@ -30,10 +30,10 @@
 
   function draw(urls) {
     d3.select(".urls").append("svg")
-        .attr("width", 700)
-        .attr("height", 700)
+        .attr("width", 800)
+        .attr("height", 800)
       .append("g")
-        .attr("transform", "translate(350,350)")
+        .attr("transform", "translate(400,400)")
       .selectAll("text")
         .data(urls)
       .enter().append("text")
@@ -50,7 +50,7 @@
 <script>
   var fill = d3.scale.category20();
 
-  d3.layout.cloud().size([700, 700])
+  d3.layout.cloud().size([900, 900])
       .words(wordsData)
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .font("Impact")
@@ -60,10 +60,10 @@
 
   function draw(words) {
     d3.select(".words").append("svg")
-        .attr("width", 700)
-        .attr("height", 700)
+        .attr("width", 900)
+        .attr("height", 900)
       .append("g")
-        .attr("transform", "translate(350,350)")
+        .attr("transform", "translate(450,450)")
       .selectAll("text")
         .data(words)
       .enter().append("text")

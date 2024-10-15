@@ -2,6 +2,7 @@ body {
   background-color: darkslategrey;
   color: #eee;
   font-family: 'Impact', 'Spectral', 'Arial', 'Helvetica', sans-serif;
+  font-size: 28px;
   font-weight: 400;
   text-align: center;
 }
@@ -28,7 +29,11 @@ a {
   margin-top: 48px;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1300px) {
+  body {
+    font-size: 20px;
+  }
+
   .container {
     flex-direction: row;
   }
