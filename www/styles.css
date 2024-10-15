@@ -1,12 +1,18 @@
 body {
-  font-family: 'Spectral', 'Arial', 'Helvetica', sans-serif;
+  background-color: darkslategrey;
+  color: #eee;
+  font-family: 'Impact', 'Spectral', 'Arial', 'Helvetica', sans-serif;
   font-weight: 400;
   text-align: center;
 }
 
 h1 {
-  margin: auto;
+  margin-bottom: 48px;
   padding: 8px;
+}
+
+a {
+  color: palegoldenrod;
 }
 
 .container {
@@ -16,6 +22,10 @@ h1 {
 
 .container > div {
   flex: 1;
+}
+
+.footer {
+  margin-top: 48px;
 }
 
 @media (min-width: 1200px) {
