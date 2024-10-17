@@ -11,5 +11,4 @@ python3 urls_data_to_json.py
 python3 article_words_to_json.py
 
 # step 4 - push up the changes to the hosted web content
-cd www/
-surge --domain usarneme-hn.surge.sh
+surge --domain usarneme-hn.surge.sh --project /Users/usarneme/Projects/pieathon/www/
