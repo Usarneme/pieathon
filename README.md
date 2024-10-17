@@ -46,7 +46,7 @@ Python3 must also be installed and able to be used from the command line. Check 
 
 2. Enter the cloned directory and get the path to the python script:
 `cd pieathon`
-`pwd` should output the full path to the script, for me it is at `/Users/usarneme/Projects/pieathon/scrape.py`
+`pwd` should output the full path to the directory, for me it is at `/Users/usarneme/Projects/pieathon`
 
 3. Enable the shell script to be executed from the command line:
 `chmod +x orchestrator.sh`
@@ -54,7 +54,7 @@ Python3 must also be installed and able to be used from the command line. Check 
 4. Get the path to your bash binary:
 `which bash` should output the full directory, for me it is at `/bin/sh`
 
-5. Create a .plist XML file with nano or your editor of choice: 
+5. Create a .plist XML file with nano or your editor of choice:
 `nano ~/Library/LaunchAgents/hackernews.scraper.plist`
 
 ```
