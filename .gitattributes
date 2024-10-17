@@ -1,2 +1,3 @@
-# Ignore HTML and CSS files
+# Ignore generated html and js as not part of the scope of this project
 *.html linguist-vendored
+www/*.js linguist-vendored
