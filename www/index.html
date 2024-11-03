@@ -15,7 +15,12 @@
     <div class="urls"><h3>Urls Where Articles Are Hosted</h3></div>
     <div class="words"><h3>Words in Article Titles</h3></div>
   </div>
-  <div class="footer">See <a href="https://github.com/Usarneme/pieathon">https://github.com/Usarneme/pieathon</a> for the code behind this word cloud.</div>
+  <div class="footer">
+    <span>
+      See <a href="https://github.com/Usarneme/pieathon">https://github.com/Usarneme/pieathon</a> for the code behind this word cloud.
+    </span>
+    <span class="updated"></span>
+  </div>
 </body>
 <script>
   var fill = d3.scale.category20();
@@ -76,4 +81,8 @@
         })
         .text(function(d) { return d.text; });
   }
+</script>
+<script>
+  const now = new Date().toLocaleString();
+  document.querySelector(".updated").innerText = `Last updated on ${now}.`
 </script>
