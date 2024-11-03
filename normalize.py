@@ -4,7 +4,7 @@ import re
 import sqlite3
 import string
 
-logger = setup_logger('normalize.py')
+logger = setup_logger()
 logger.info('Starting normalize.py...')
 
 stop_words = {

@@ -1,6 +1,6 @@
 import logging
 
-def setup_logger(name, log_file='/Users/usarneme/Library/Logs/hackernews_scraper.log', level=logging.INFO):
+def setup_logger(name=__name__, log_file='/Users/usarneme/Library/Logs/hackernews_scraper.log', level=logging.INFO):
     logger = logging.getLogger(name)
     logger.setLevel(level)
 

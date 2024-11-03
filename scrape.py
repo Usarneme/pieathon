@@ -5,7 +5,7 @@ import os
 import requests
 import sqlite3
 
-logger = setup_logger('scrape.py')
+logger = setup_logger()
 logger.info('Starting scrape.py...')
 
 def fetch_html(url):

@@ -2,7 +2,7 @@ from logging_config import setup_logger
 import os
 import sqlite3
 
-logger = setup_logger('urls_data_to_json.py')
+logger = setup_logger()
 logger.info('Starting urls_data_to_json.py...')
 
 db_path = os.path.abspath('hackernews.sqlite')
